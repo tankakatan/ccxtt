@@ -1,0 +1,23 @@
+{
+  "presets": ["react-native"],
+  "env": {
+    "development": {
+      "plugins": [
+      	"transform-react-jsx-source",
+      	["module-resolver", {
+		      "root": ["./src"],
+		      "alias": {
+		        "test": "./__test__",
+		        "actions": "./src/actions",
+		        "controllers": "./src/controllers",
+		        "reducers": "./src/reducers",
+		        "styles": "./src/styles",
+		        "thunks": "./src/thunks",
+		        "utils": "./src/utils",
+		        "views": "./src/views"
+		      }
+		    }]
+    	]
+    }
+  }
+}
