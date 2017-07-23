@@ -6,7 +6,9 @@ import {
   Image,
   Button,
   FlatList,
-  ActivityIndicator
+  TextInput,
+  ActivityIndicator,
+  TouchableHighlight,
 
 } from 'react-native'
 
@@ -27,14 +29,34 @@ export const MarketListItemView = ({ index, item, separators }) => (
 
 )
 
+export const ListSearchView = props => (
+	
+	<View style={ styles.listSearchView }>
+		<TextInput
+			style={ styles.listSearchInput }
+			placeholder={ 'Enter a market name' }
+			onChange={ props.onSearchTextChange }
+		/>
+		<TouchableHighlight onPress={ props.onSearchCancell }>
+			<Text style={ styles.listSearchCancell }>Cancel</Text>
+		</TouchableHighlight>
+	</View>
+
+)
+
 export const MarketListView = props => (
 
-	<FlatList data={ props.data }
-		keyExtractor={ (item, index) => index }
-		renderItem={ props.renderItem }
-		refreshing={ props.isRefreshing }
-		onRefresh={ props.onRefresh }
-	/>    
+	<View style={ styles.marketListViewContainer }>
+		{ props.searchEnabled ? <ListSearchView { ...props }/> : null }
+		<FlatList data={ props.data }
+			keyExtractor={ (item, index) => index }
+			renderItem={ props.renderItem }
+			refreshing={ props.isRefreshing }
+			onRefresh={ props.onRefresh }
+			onScroll={ props.onScroll }
+			scrollEventThrottle={ 512 }
+		/>
+	</View>
 
 )
 

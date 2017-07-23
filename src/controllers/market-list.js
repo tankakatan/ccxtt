@@ -2,7 +2,15 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import styles from 'styles/market-list'
-import { getMarketList } from 'thunks/market-list'
+import {
+  
+  getMarketList,
+  toggleSearchView,
+  cancelSearch,
+  searchInMarketList,
+
+} from 'thunks/market-list'
+
 import {
 	
 	MarketListView,
@@ -25,11 +33,17 @@ class MarketListController extends Component {
 
   get listViewProps () {
   	return {
-  		data: this.props.marketList,
-      isRefreshing: false,
-      onRefresh: () => console.log ('Refreshing market list'),
-      renderItem: props => ( <MarketListItemView { ...props }/> ),
-  	}
+
+      isRefreshing        : false,
+      searchEnabled       : this.props.marketListSearchEnabled,
+  		data                : this.props.filteredMarketList,
+      onRefresh           : () => console.log ('Refreshing market list'),
+      renderItem          : props => ( <MarketListItemView { ...props }/> ),
+      onScroll            : e => (e.nativeEvent.contentOffset.y < -8) ? this.props.toggleSearchView (true) : null,
+      onSearchCancell     : e => this.props.cancelSearch (null),
+      onSearchTextChange  : e => this.props.searchInMarketList (e.nativeEvent.text),
+  	
+    }
   }
 
   get errorViewProps () {
@@ -56,16 +70,20 @@ class MarketListController extends Component {
 
 const mapStateToProps = state => ({
 
-  marketList: state.marketList.marketList,
+  filteredMarketList: state.marketList.filteredMarketList,
   marketListFetching: state.marketList.marketListFetching,
   marketListError: state.marketList.marketListError,
+  marketListSearchEnabled: state.marketList.marketListSearchEnabled,
 
 })
 
 
 const mapDispatchToProps = dispatch => ({
 
-  getMarketList: () => dispatch (getMarketList ())
+  getMarketList: () => dispatch (getMarketList ()),
+  cancelSearch: () => dispatch (cancelSearch ()),
+  toggleSearchView: (enabled) => dispatch (toggleSearchView (enabled)),
+  searchInMarketList: (text) => dispatch (searchInMarketList (text)),
 
 })
 

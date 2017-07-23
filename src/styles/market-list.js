@@ -23,6 +23,9 @@ const styles = StyleSheet.create ({
     margin: 10,
     color: 'red',
   },
+  marketListViewContainer: {
+    flex: 1,
+  },
   marketListRow: {
     height: 44,
     paddingLeft: 20,
@@ -42,7 +45,26 @@ const styles = StyleSheet.create ({
   marketLogoImage: {
     width: 66,
     height: 44,
-  }
+  },
+  listSearchView: {
+    height: 44,
+    marginTop: 10,
+    marginBottom: 10,
+    marginRight: 20,
+    marginLeft: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  listSearchInput: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 5,
+    marginRight: 10,
+    borderRadius: 5,
+  },
+  listSearchCancell: {
+    color: '#69e'
+  },
 })
 
 export default styles
