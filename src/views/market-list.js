@@ -4,23 +4,34 @@ import {
   View,
   Text,
   Button,
+  FlatList,
   ActivityIndicator
 
 } from 'react-native'
 
 import styles from 'styles/market-list'
+// import * as utils from 'utils/market-list'
+
+export const MarketListItemView = ({ index, item, separators }) => (
+
+	<View style={ styles.marketListRow }>
+		<Text styel={ styles.marketListRowTitle }>{ item }</Text>
+	</View>
+
+)
+
 
 export const MarketListView = props => (
 
-	console.log ('MarketList props', props),
+	<FlatList data={ props.data }
+		keyExtractor={ (item, index) => index }
+		renderItem={ props => ( <MarketListItemView { ...props }/> ) }
+		refreshing={ props.refreshing || false }
+		onRefresh={ () => console.log ('Refreshing market list') }
+	/>    
 
-	<View style={ styles.container }>
-		<Text style={ styles.welcome }>
-			Market List
-		</Text>
-	</View>
-    
 )
+
 
 export const MarketListFetchingView = (props) => (
 

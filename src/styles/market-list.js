@@ -23,6 +23,17 @@ const styles = StyleSheet.create ({
     margin: 10,
     color: 'red',
   },
+  marketListRow: {
+    height: 44,
+    paddingLeft: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  marketListRowTitle: {
+    flex: 1,
+    color: '#333',
+    fontSize: 20,
+  }
 })
 
 export default styles
