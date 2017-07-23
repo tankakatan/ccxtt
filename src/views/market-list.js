@@ -3,6 +3,7 @@ import {
   
   View,
   Text,
+  Image,
   Button,
   FlatList,
   ActivityIndicator
@@ -10,28 +11,32 @@ import {
 } from 'react-native'
 
 import styles from 'styles/market-list'
-// import * as utils from 'utils/market-list'
+
 
 export const MarketListItemView = ({ index, item, separators }) => (
-
 	<View style={ styles.marketListRow }>
-		<Text styel={ styles.marketListRowTitle }>{ item }</Text>
+		<View style={ styles.marketLogo }>
+			<Image
+				style={ styles.marketLogoImage }
+				source={{ uri: item.urls.logo }}
+				resizeMode={ 'contain' }
+			/>
+		</View>
+		<Text styel={ styles.marketListRowTitle }>{ item.name }</Text>
 	</View>
 
 )
-
 
 export const MarketListView = props => (
 
 	<FlatList data={ props.data }
 		keyExtractor={ (item, index) => index }
-		renderItem={ props => ( <MarketListItemView { ...props }/> ) }
-		refreshing={ props.refreshing || false }
-		onRefresh={ () => console.log ('Refreshing market list') }
+		renderItem={ props.renderItem }
+		refreshing={ props.isRefreshing }
+		onRefresh={ props.onRefresh }
 	/>    
 
 )
-
 
 export const MarketListFetchingView = (props) => (
 
@@ -40,7 +45,6 @@ export const MarketListFetchingView = (props) => (
 	</View>
 
 )
-
 
 export const MarketListErrorView = (props) => (
 
@@ -52,4 +56,5 @@ export const MarketListErrorView = (props) => (
 			<Text style={ style.instructions }>Retry</Text>
 		</Button>
 	</View>
+
 )

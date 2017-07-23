@@ -294,8 +294,8 @@ var Market = function (config) {
 
     this.init = function () {
 
-        if (isNode)
-            this.nodeVersion = process.version.match (/\d+\.\d+.\d+/) [0]
+        // if (isNode)
+        //     this.nodeVersion = process.version.match (/\d+\.\d+.\d+/) [0]
 
         if (this.api)
             Object.keys (this.api).forEach (type => {

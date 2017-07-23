@@ -33,6 +33,15 @@ const styles = StyleSheet.create ({
     flex: 1,
     color: '#333',
     fontSize: 20,
+  },
+  marketLogo: {
+    marginRight: 10,
+    width: 66,
+    height: 44,
+  },
+  marketLogoImage: {
+    width: 66,
+    height: 44,
   }
 })
 

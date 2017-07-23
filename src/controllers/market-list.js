@@ -6,6 +6,7 @@ import { getMarketList } from 'thunks/market-list'
 import {
 	
 	MarketListView,
+  MarketListItemView,
 	MarketListFetchingView,
 	MarketListErrorView,
 
@@ -25,6 +26,9 @@ class MarketListController extends Component {
   get listViewProps () {
   	return {
   		data: this.props.marketList,
+      isRefreshing: false,
+      onRefresh: () => console.log ('Refreshing market list'),
+      renderItem: props => ( <MarketListItemView { ...props }/> ),
   	}
   }
 
