@@ -38,9 +38,16 @@ export const searchInMarketList = text => (dispatch, getState) => {
 
 export const cancelSearch = () => (dispatch, getState) => {
 
-	dispatch (setSearchedText (null))
+	dispatch (searchInMarketList (null))
 	dispatch (toggleSearchView (false))
 }
+
+
+export const clearSearch = () => (dispatch, getState) => {
+
+	dispatch (searchInMarketList (null))
+}
+
 
 export const filterSearchList = () => (dispatch, getState) => {
 

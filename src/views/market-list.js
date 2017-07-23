@@ -33,10 +33,14 @@ export const ListSearchView = props => (
 	
 	<View style={ styles.listSearchView }>
 		<TextInput
+			value={ props.searchedText }
 			style={ styles.listSearchInput }
 			placeholder={ 'Enter a market name' }
 			onChange={ props.onSearchTextChange }
 		/>
+		<TouchableHighlight style={ styles.clearSearch } onPress={ props.clearSearch }>
+			<Text style={ styles.clearSearchText }>x</Text>
+		</TouchableHighlight>
 		<TouchableHighlight onPress={ props.onSearchCancell }>
 			<Text style={ styles.listSearchCancell }>Cancel</Text>
 		</TouchableHighlight>
