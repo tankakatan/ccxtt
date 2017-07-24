@@ -41,8 +41,8 @@ export const ListSearchView = props => (
 		<TouchableHighlight style={ styles.clearSearch } onPress={ props.clearSearch }>
 			<Text style={ styles.clearSearchText }>x</Text>
 		</TouchableHighlight>
-		<TouchableHighlight onPress={ props.onSearchCancell }>
-			<Text style={ styles.listSearchCancell }>Cancel</Text>
+		<TouchableHighlight onPress={ props.onSearchCancel }>
+			<Text style={ styles.listSearchCancel }>Cancel</Text>
 		</TouchableHighlight>
 	</View>
 

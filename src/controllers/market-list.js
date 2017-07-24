@@ -43,7 +43,7 @@ class MarketListController extends Component {
       renderItem          : props => ( <MarketListItemView { ...props }/> ),
       onScroll            : e => (e.nativeEvent.contentOffset.y < -8) ? this.props.toggleSearchView (true) : null,
       clearSearch         : e => this.props.clearSearch (),
-      onSearchCancell     : e => this.props.cancelSearch (null),
+      onSearchCancel      : e => this.props.cancelSearch (null),
       onSearchTextChange  : e => this.props.searchInMarketList (e.nativeEvent.text),
     
     }

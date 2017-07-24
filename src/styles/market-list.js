@@ -49,7 +49,7 @@ const styles = StyleSheet.create ({
     borderBottomLeftRadius: 5,
   },
   
-  listSearchCancell: {
+  listSearchCancel: {
     color: '#69e'
   },
   
