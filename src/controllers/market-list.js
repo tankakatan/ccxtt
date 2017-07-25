@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import styles from 'styles/market-list'
 import {
   
-  getMarketList,
+  initMarketList,
   toggleSearchView,
   cancelSearch,
   clearSearch,
@@ -13,61 +13,62 @@ import {
 } from 'thunks/market-list'
 
 import {
-	
-	MarketListView,
+  
+  MarketListView,
   MarketListItemView,
-	MarketListFetchingView,
-	MarketListErrorView,
+  MarketListFetchingView,
+  MarketListErrorView,
 
 } from 'views/market-list'
 
 
 class MarketListController extends Component {
 
-	static navigationOptions = {
+  static navigationOptions = {
     title: 'Market List'
   }
 
   componentDidMount () {
-  	this.props.getMarketList ()
+    this.props.initMarketList ()
   }
 
   get listViewProps () {
-  	return {
+    return {
 
       isRefreshing        : false,
       searchEnabled       : this.props.marketListSearchEnabled,
       searchedText        : this.props.marketListSearchedText,
-  		data                : this.props.filteredMarketList,
+      data                : this.props.filteredMarketList,
       onRefresh           : () => console.log ('Refreshing market list'),
       renderItem          : props => ( <MarketListItemView { ...props }/> ),
       onScroll            : e => (e.nativeEvent.contentOffset.y < -8) ? this.props.toggleSearchView (true) : null,
       clearSearch         : e => this.props.clearSearch (),
-      onSearchCancell     : e => this.props.cancelSearch (null),
+      onSearchCancel      : e => this.props.cancelSearch (null),
       onSearchTextChange  : e => this.props.searchInMarketList (e.nativeEvent.text),
-  	
+    
     }
   }
 
   get errorViewProps () {
-  	return {
-  		error: this.props.marketListErro,
-  		retry: this.props.getMarketList,
+    return {
+      
+      error: this.props.marketListError,
+      retry: this.props.initMarketList,
 
-  	}
+    }
   }
 
-	render () {
-		return (
-			this.props.marketListFetching ? ( <MarketListFetchingView /> ) : (
-				this.props.marketListError ? ( <MarketListErrorView { ...this.errorViewProps }/> ) : (
-					
-					<MarketListView { ...this.listViewProps }/>
-				
-				)
-			)
-		)
-	}
+  render () {
+    return (
+      this.props.marketListFetching ? ( <MarketListFetchingView /> ) : (
+        this.props.marketListError ? ( <MarketListErrorView { ...this.errorViewProps }/> ) : (
+          
+          <MarketListView { ...this.listViewProps }/>
+        
+        )
+      )
+    )
+  }
 }
 
 
@@ -84,7 +85,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 
-  getMarketList: () => dispatch (getMarketList ()),
+  initMarketList: () => dispatch (initMarketList ()),
   cancelSearch: () => dispatch (cancelSearch ()),
   clearSearch: () => dispatch (clearSearch ()),
   toggleSearchView: (enabled) => dispatch (toggleSearchView (enabled)),

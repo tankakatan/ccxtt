@@ -2,7 +2,18 @@
 
 (function () {
 
-var isNode = true //(typeof window === 'undefined')
+var isNode = (typeof window === 'undefined')
+var isReactNative = true
+
+try {
+
+    let isReactNative = true //require ('react-native') ? true : false
+    console.log ('Detected react-native app')
+
+} catch (e) {
+    throw (e)
+    console.log ('Not a react-native app', e)
+}
 
 //-----------------------------------------------------------------------------
 
@@ -173,10 +184,11 @@ var sum = function (... args) {
 //-----------------------------------------------------------------------------
 // platform-specific code (Node.js / Web Browsers)
 
-if (isNode) {
 
-    var CryptoJS = require ('crypto-js')
-    var fetch    = window.fetch //require ('node-fetch')
+if (isNode || isReactNative) {
+
+    var CryptoJS = require ('crypto-js')    
+    var fetch    = isReactNative ? window.fetch : require ('node-fetch')
 
 } else {
 
@@ -294,8 +306,8 @@ var Market = function (config) {
 
     this.init = function () {
 
-        // if (isNode)
-        //     this.nodeVersion = process.version.match (/\d+\.\d+.\d+/) [0]
+        if (isNode)
+            this.nodeVersion = process.version.match (/\d+\.\d+.\d+/) [0]
 
         if (this.api)
             Object.keys (this.api).forEach (type => {
@@ -331,7 +343,7 @@ var Market = function (config) {
 
     this.fetch = function (url, method = 'GET', headers = undefined, body = undefined) {
 
-        if (isNode)
+        if (isNode) /* TODO: may be needed in react-native environment as well */
             headers = extend ({
                 'User-Agent': 'ccxt/0.1.0 (+https://github.com/kroitor/ccxt) Node.js/' + this.nodeVersion + ' (JavaScript)'
             }, headers)
@@ -10777,7 +10789,7 @@ let defineAllMarkets = function (markets) {
     return result
 }
 
-if (isNode) {
+if (isNode || isReactNative) {
     
     Object.assign (module.exports = defineAllMarkets (markets), {
 

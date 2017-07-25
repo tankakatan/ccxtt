@@ -11,8 +11,7 @@ import {
 
 import ccxt from '../ccxt/ccxt'
 
-
-export const getMarketList = () => (dispatch, getState) => {
+export const initMarketList = () => (dispatch, getState) => {
 	
 	dispatch (setMarketListFetching (true))
 
