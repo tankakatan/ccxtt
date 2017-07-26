@@ -2,8 +2,8 @@
 
 ```bash
 brew install watchman
-npm install -g react-native
+npm install -g react-native-cli
 npm install
-npm start
-react-native run ios
+npm start # optionally
+react-native run ios # or run iOS project with xcode
 ```

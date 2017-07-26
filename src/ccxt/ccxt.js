@@ -7,13 +7,9 @@ var isReactNative = true
 
 try {
 
-    let isReactNative = true //require ('react-native') ? true : false
-    console.log ('Detected react-native app')
+    let isReactNative = require ('react-native') ? true : false
 
-} catch (e) {
-    throw (e)
-    console.log ('Not a react-native app', e)
-}
+} catch (e) { }
 
 //-----------------------------------------------------------------------------
 
@@ -184,11 +180,15 @@ var sum = function (... args) {
 //-----------------------------------------------------------------------------
 // platform-specific code (Node.js / Web Browsers)
 
+if (isNode) {
 
-if (isNode || isReactNative) {
+    var CryptoJS = require ('crypto-js')
+    var fetch = module.require ('node-fetch')
+
+} else if (isReactNative) {
 
     var CryptoJS = require ('crypto-js')    
-    var fetch    = isReactNative ? window.fetch : require ('node-fetch')
+    var fetch    = window.fetch
 
 } else {
 
@@ -343,10 +343,10 @@ var Market = function (config) {
 
     this.fetch = function (url, method = 'GET', headers = undefined, body = undefined) {
 
-        if (isNode) /* TODO: may be needed in react-native environment as well */
-            headers = extend ({
-                'User-Agent': 'ccxt/0.1.0 (+https://github.com/kroitor/ccxt) Node.js/' + this.nodeVersion + ' (JavaScript)'
-            }, headers)
+        // if (isNode) /* TODO: may be needed in react-native environment as well */
+        //     headers = extend ({
+        //         'User-Agent': 'ccxt/0.1.0 (+https://github.com/kroitor/ccxt) Node.js/' + this.nodeVersion + ' (JavaScript)'
+        //     }, headers)
 
         if (this.proxy.length)
             headers = extend ({ 'Origin': '*' }, headers)
