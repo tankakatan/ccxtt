@@ -21,7 +21,6 @@ import {
 
 } from 'views/market-list'
 
-
 class MarketListController extends Component {
 
   static navigationOptions = {

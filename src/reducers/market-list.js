@@ -6,6 +6,7 @@ import {
 	SET_SEARCH_VIEW_ENABLED,
 	SET_SEARCH_TEXT,
 	SET_FILTERED_MARKET_LIST,
+	SET_PRODUCT_LIST,
 
 } from 'actions/market-list'
 
@@ -17,6 +18,7 @@ const DEFAULT_STATE = {
   marketListError: null,
   marketListSearchEnabled: false,
   marketListSearchedText: null,
+  productList: [],
 
 }
 
@@ -56,6 +58,15 @@ export const marketList = (state = DEFAULT_STATE, action) => {
 		case SET_SEARCH_TEXT: {
 			return { ...state,
 				marketListSearchedText: action.text,
+			}
+		}
+
+		case SET_PRODUCT_LIST: {
+			return { ...state,
+				productList: (
+					Array.isArray (action.list) ? (
+						action.list.compact ().concat (state.productList).uniqBy ('symbol')) : state.productList
+				),
 			}
 		}
 

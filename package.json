@@ -7,7 +7,6 @@
 		"test": "jest"
 	},
 	"dependencies": {
-		"ccxt": "^1.1.80",
 		"lodash": "^4.17.4",
 		"moment": "^2.18.1",
 		"react": "16.0.0-alpha.12",

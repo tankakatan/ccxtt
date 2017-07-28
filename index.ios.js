@@ -11,6 +11,8 @@ import { Provider } from 'react-redux'
 import AppController from 'controllers/app'
 import configureStore from './src/store'
 
+import './src/utils/app'
+
 const store = configureStore ()
 
 export default class CCXTT extends Component {
