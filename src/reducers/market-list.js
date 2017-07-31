@@ -3,24 +3,36 @@ import {
 	SET_MARKET_LIST,
 	SET_MARKET_LIST_FETCHING,
 	SET_MARKET_LIST_ERROR,
+	
 	SET_SEARCH_VIEW_ENABLED,
 	SET_SEARCH_TEXT,
 	SET_FILTERED_MARKET_LIST,
-	SET_PRODUCT_LIST,
+
+	SET_PRODUCT_LIST_BY_MARKET,
+	SET_MARKET_BY_PRODUCT,
+
+	SET_CURRENT_PRODUCT,
 
 } from 'actions/market-list'
 
-const DEFAULT_STATE = {
 
+const DEFAULT_STATE = {
+  
   marketList: [],
-  filteredMarketList: [],
   marketListFetching: false,
   marketListError: null,
+  
   marketListSearchEnabled: false,
   marketListSearchedText: null,
-  productList: [],
+  filteredMarketList: [],
+  
+  productListByMarket: {},
+  marketByProduct: {},
+  
+  currentProduct: null,
 
 }
+
 
 export const marketList = (state = DEFAULT_STATE, action) => {
 	switch (action.type) {
@@ -61,12 +73,21 @@ export const marketList = (state = DEFAULT_STATE, action) => {
 			}
 		}
 
-		case SET_PRODUCT_LIST: {
+		case SET_PRODUCT_LIST_BY_MARKET: {
 			return { ...state,
-				productList: (
-					Array.isArray (action.list) ? (
-						action.list.compact ().concat (state.productList).uniqBy ('symbol')) : state.productList
-				),
+				productListByMarket: action.dictionary,
+			}
+		}
+
+		case SET_MARKET_BY_PRODUCT: {
+			return { ...state,
+				marketByProduct: action.dictionary,
+			}
+		}
+
+		case SET_CURRENT_PRODUCT: {
+			return { ...state,
+				currentProduct: action.product,
 			}
 		}
 

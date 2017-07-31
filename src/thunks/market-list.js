@@ -3,14 +3,20 @@ import {
 	setMarketList,
 	setMarketListFetching,
 	setMarketListError,
+	
 	setSearchViewEnabled,
 	setSearchedText,
 	setFilteredMarketList,
-	setProductList,
+	
+	setProductListByMarket,
+	setMarketByProduct,
+
+	setCurrentProduct,
 
 } from 'actions/market-list'
 
 import ccxt from 'ccxt'
+
 
 export const initMarketList = () => (dispatch, getState) => {
 	
@@ -23,6 +29,7 @@ export const initMarketList = () => (dispatch, getState) => {
 	dispatch (setMarketListFetching (false))
 	dispatch (getMarketListProducts ())
 }
+
 
 export const toggleSearchView = enabled => (dispatch, getState) => {
 
@@ -64,8 +71,25 @@ export const filterSearchList = () => (dispatch, getState) => {
 
 export const getMarketListProducts = () => (dispatch, getState) => {
 	const { marketList: { marketList }} = getState ()
-	marketList.forEach (market => market.api && market.api.public && market.fetchProducts ()
-		.then (productList => dispatch (setProductList (productList)))
-		.catch (error => console.log ('Product fetch error', market.name, error, market))
-	)
+	
+	Promise.all (marketList.map (market => {
+		const { marketList: { productListByMarket, marketByProduct }} = getState ()
+
+		return market.api && market.api.public && market.fetchProducts ().then (productList => {			
+			dispatch (setProductListByMarket ({ ...productListByMarket, [market.name]: productList, }))
+			dispatch (setMarketByProduct (
+				productList.map (({ symbol }) => symbol).reduce ((marketByProduct, symbol) => ({ ...marketByProduct,
+					[symbol]: (marketByProduct[symbol] || []).concat ([market]),
+				}), marketByProduct)
+			))
+		}).catch (error => dispatch (setProductListByMarket ({ ...productListByMarket,
+			[market.name]: { error },
+		})))
+
+	})).then (() => {
+
+		const { marketList: { marketByProduct }} = getState ()	
+		dispatch (setCurrentProduct (marketByProduct.keysOf ().sort (($1, $2) => (marketByProduct[$1].length - marketByProduct[$2].length)).pop ()))
+	
+	})
 }
