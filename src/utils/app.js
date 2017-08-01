@@ -24,3 +24,13 @@ Object.defineProperty (Object.prototype, 'keysOf', { enumerable: false, value: f
 	const obj = this
 	return _.keys (obj)
 }})
+
+Object.defineProperty (Object.prototype, 'omitBy', { enumerable: false, value: function (predicate) {		
+	const obj = this
+	return _.omitBy (obj, predicate)
+}})
+
+Object.defineProperty (Object.prototype, 'pickBy', { enumerable: false, value: function (predicate) {		
+	const obj = this
+	return _.pickBy (obj, predicate)
+}})

@@ -58,7 +58,6 @@ export const clearSearch = () => (dispatch, getState) => {
 
 
 export const filterSearchList = () => (dispatch, getState) => {
-
 	const { marketList: { marketList, marketListSearchedText }} = getState ()
 
 	dispatch (setFilteredMarketList (marketListSearchedText ? (
@@ -71,25 +70,38 @@ export const filterSearchList = () => (dispatch, getState) => {
 
 export const getMarketListProducts = () => (dispatch, getState) => {
 	const { marketList: { marketList }} = getState ()
-	
-	Promise.all (marketList.map (market => {
-		const { marketList: { productListByMarket, marketByProduct }} = getState ()
 
-		return market.api && market.api.public && market.fetchProducts ().then (productList => {			
+	Promise.all (marketList.map ((market, index) => {
+		return market.api && market.api.public && market.loadProducts ().then (productList => {
+			const { marketList: { productListByMarket, marketByProduct }} = getState ()
+			
 			dispatch (setProductListByMarket ({ ...productListByMarket, [market.name]: productList, }))
-			dispatch (setMarketByProduct (
-				productList.map (({ symbol }) => symbol).reduce ((marketByProduct, symbol) => ({ ...marketByProduct,
-					[symbol]: (marketByProduct[symbol] || []).concat ([market]),
-				}), marketByProduct)
-			))
-		}).catch (error => dispatch (setProductListByMarket ({ ...productListByMarket,
-			[market.name]: { error },
-		})))
-
+		}).catch (error => {
+			const { marketList: { productListByMarket }} = getState ()
+			
+			dispatch (setProductListByMarket ({ ...productListByMarket,
+				[market.name]: { error },
+			}))
+		})
 	})).then (() => {
+		const { marketList: { productListByMarket, marketByProduct }} = getState ()
+		
+		dispatch (setMarketByProduct (
+			productListByMarket.keysOf ().map ((name) => ({ name,
+				productList: productListByMarket[name].keysOf (),
 
-		const { marketList: { marketByProduct }} = getState ()	
-		dispatch (setCurrentProduct (marketByProduct.keysOf ().sort (($1, $2) => (marketByProduct[$1].length - marketByProduct[$2].length)).pop ()))
-	
+			})).reduce ((marketListByProduct, market) => (
+				market.productList.reduce ((marketByProduct, product) => ({ ...marketByProduct,	
+					[product]: (marketByProduct[product] || []).concat ([market.name]),
+
+				}), marketListByProduct)
+			), marketByProduct).pickBy ((marketList) => (marketList.length > 1))
+		))
+	}).then (() => {
+		const { marketList: { marketByProduct }} = getState ()
+
+		dispatch (setCurrentProduct (marketByProduct.keysOf ().sort (($1, $2) => (
+			marketByProduct[$1].length - marketByProduct[$2].length)
+		).pop ()))
 	})
 }
